@@ -4,3 +4,6 @@ obj/
 *.depend
 *.layout
 *.pdf
+*.exe
+*.obj
+*.o
