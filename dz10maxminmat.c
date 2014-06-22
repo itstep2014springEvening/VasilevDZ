@@ -11,19 +11,19 @@ int main()
     scanf("%d",&b);
     if (b!=0)
     {
-        printf("summa %d\n",a+b,);
-        printf("raznos' %d\n",a-b,);
-        printf("proizvedenie %d\n",a*b,);
-        printf("delenie %d\n",a/b,);
-        printf("ostatok ot deleniya %d\n",a%b,);
+        printf("summa %d\n",a+b);
+        printf("raznos' %d\n",a-b);
+        printf("proizvedenie %d\n",a*b);
+        printf("delenie %d\n",a/b);
+        printf("ostatok ot deleniya %d\n",a%b);
 
     }
     else
     {
         printf("atata!, na 0 delit' nizya!, vot ostal'noe !\n");
-        printf("summa %d\n",a+b,);
-        printf("raznos' %d\n",a-b,);
-        printf("proizvedenie %d\n",a*b,);
+        printf("summa %d\n",a+b);
+        printf("raznos' %d\n",a-b);
+        printf("proizvedenie %d\n",a*b);
 
     }
     if (a>b)
