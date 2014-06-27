@@ -4,11 +4,12 @@
 int main()
 
 {
-    double x,a;
-    printf("vvedite stepen' exp\n");
-    scanf("%lf",&x);
-    printf("x=%f\n",x);
-    double sum=1.0,dobavka=1.0,eps=0.001;
+    double x,eps,a;
+    printf("vvedite tochnost' \n");
+    scanf("%lf",&eps);
+    printf(" x \t nash exp(x) \t funexp(x) \t nash exp(x)-funexp(x)\n\n");
+    for (x=-2.0;x<2.1;x=x+0.1){
+    double sum=1.0,dobavka=1;
     int i=1;
     while(fabs(dobavka)>eps)
     {
@@ -17,8 +18,8 @@ int main()
         ++i;
 
     }
-    printf("e=%f\n",sum);
+
     a=exp(x);
-    printf("math E=%f\n",a);
-    printf("raznost' = %f\n",a-sum);
+   printf(" %.1f \t %f \t %f \t %f \t \n",x,sum,a,sum-a);
+}
 }
