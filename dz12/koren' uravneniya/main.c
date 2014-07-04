@@ -3,6 +3,7 @@
 #include <math.h>
 int main()
 {
+
     double d,x1,x2,a,b,c;
     printf("vvedite A\n");
     scanf("%lf",&a);
@@ -21,6 +22,7 @@ int main()
         x2= ((-b) - sqrt(d))/(2*a);
         printf("x1=%f\n",x1);
         printf("x2=%f\n",x2);
+
 
     }
     return 0;
