@@ -5,12 +5,12 @@ int nod(int i,int j);
 
 int main()
 {
-    int k,n;
+    int n;
     printf("vvedite razmer polya\n");
-    scanf("%d",&k);
-    n=k;
+    scanf("%d",&n);
 
-    for(int i=1; i<k; i++)
+
+    for(int i=1; i<n; i++)
     {
         for(int j=1; j<n; j++)
         {
