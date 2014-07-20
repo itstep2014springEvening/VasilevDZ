@@ -4,11 +4,12 @@
 int main()
 
 {
-    double x,a;
-    printf("vvedite x , dlya vishitivaniya sin(x)\n");
-    scanf("%lf",&x);
-    printf("x=%f\n",x);
-    double sum=x,dobavka=x,eps=0.001;
+    double x,a,l;
+    printf("vvedite tocnnos'\n");
+    scanf("%lf",&l);
+     printf(" x \t nash sin(x) \t funsin(x) \t nash sin(x)-funsin(x)\n\n");
+    for (x=-2.0;x<2.1;x=x+0.1){
+    double sum=x,dobavka=x,eps=l;
     int i=1;
     int j=1;
     int k=-1;
@@ -21,9 +22,8 @@ int main()
         ++j;
 
     }
-    printf("sin=%f\n",sum);
-    a=sin(x);
-    printf("sin funkcii =%f\n",a);
-    printf("raznost' = %f\n",fabs(a-sum));
 
+    a=sin(x);
+   printf(" %.1f \t %f \t %f \t %f \t \n",x,sum,a,sum-a);
+    }
 }

@@ -4,11 +4,13 @@
 int main()
 
 {
-    double x,a;
-    printf("vvedite x , dlya vishitivaniya cos(x)\n");
-    scanf("%lf",&x);
-    printf("x=%f\n",x);
-    double sum=1,dobavka=1,eps=0.001;
+    double x,a,e;
+    printf("vvedite tochnost' \n");
+    scanf("%lf",&e);
+
+    printf(" x \t nash cos(x) \t funcos(x) \t nash cos(x)-funcos(x)\n\n");
+    for (x=-2.0;x<2.1;x=x+0.1){
+    double sum=1,dobavka=1,eps=e;
     int i=1;
     int j=1;
     int k=-1;
@@ -21,9 +23,9 @@ int main()
         ++j;
 
     }
-    printf("cos=%f\n",sum);
-    a=cos(x);
-    printf("cos funkcii =%f\n",a);
-    printf("raznost' = %f\n",fabs(a-sum));
 
+    a=cos(x);
+   printf(" %.1f \t %f \t %f \t %f \t \n",x,sum,a,sum-a);
+    }
 }
+
