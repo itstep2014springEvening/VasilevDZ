@@ -1,18 +1,19 @@
-
 #include <stdio.h>
-int main () {
-int i, n, a, max;
-printf ("vvedite skoko nado cifr: ");
-scanf ("%d", &n);
-printf ("vvodite sami %d chisel: ", n);
-scanf ("%d", &max);
-for(i = 1; i < n ; i++)
-    {
-scanf ("%d", &a);
-if(a > max)
-max = a;
-}
-printf ("%d", max);
-return 0;
-}
+#include <stdlib.h>
 
+int main()
+{
+    int n, m, a, min=0, max=0;
+    printf ("Vvedite n \n");
+    scanf ("%d", &n);
+    m=n;
+    for (n; n>0; --n)
+    {
+        printf ("Vvedite chislo ");
+        scanf ("%d", &a);
+        max=(a>max?a:(m>n?max:a));
+        min=(a<min?a:(m>n?min:a));
+    }
+    printf ("max=%d\nmin=%d", max, min);
+    return 0;
+}
