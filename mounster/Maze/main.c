@@ -269,7 +269,8 @@ void generateHero(Matrix maze, Position *hero)
         x = rand() % (maze.width - 2) + 1;
         y = rand() % (maze.height - 2) + 1;
         flag = maze.matrix[y][x] != 0;
-    } while(flag);
+    }
+    while(flag);
 
     hero->x = x;
     hero->y = y;
@@ -284,7 +285,8 @@ void generateM(Matrix maze, Position *m)
         x = rand() % (maze.width - 2) + 1;
         y = rand() % (maze.height - 2) + 1;
         flag = maze.matrix[y][x] != 0;
-    } while(flag);
+    }
+    while(flag);
 
     m->x = x;
     m->y = y;
@@ -327,38 +329,106 @@ void runGame(Matrix maze, Matrix fog, Position exit, Position hero,Position m)
         }
         if(m.x==hero.x && m.y==hero.y)
         {
-            printf("\n\nyou die \n");
-            return ;
+            double hpHero=1000,hpM=1000,a;
+            int randomchanceeasy,randomchancemid,randomchancehard,fight ;
+            srand(time(NULL));
+            randomchanceeasy=rand()%9;
+            if (randomchanceeasy>0)
+            {
+                randomchanceeasy=1;
+            }
+            else
+            {
+                randomchanceeasy=0;
+            }
+            randomchancemid=rand()%4;
+            if (randomchancemid>0)
+            {
+                randomchancemid=1;
+            }
+            else
+            {
+                randomchancemid=0;
+            }
+            randomchancehard=rand()%1;
+            if (randomchancehard>0)
+            {
+                randomchancehard=1;
+            }
+            else
+            {
+                randomchancehard=0;
+            }
+            printf("(\./)(-_-)(\./) VS (-_-)");
+            do
+            {
+                printf("mounster hp -  %f , your hp - %f\n",hpM,hpHero);
+                printf("(\./)(-_-)(\./) VS (-_-)\n");
+                printf("viberite tip otaki 1 , 2 ,3\n ");
+                printf("vernaya otaka\n");
+                printf("mb popadu , no urona pobolee budet\n ");
+                printf("krit otaka, trudno popast' \n");
+                int fight;
+                switch (fight)
+                {
+                case 1:
+                    hpM= hpM- (1+rand()%2)*50*(randomchanceeasy);
+                    hpHero=hpHero-150;
+                    break;
+                case 2:
+                    hpM= hpM- (3+rand()%2)*50*(randomchancemid);
+                    hpHero=hpHero-150;
+                    break;
+                case 3:
+                    hpM= hpM- (4+rand()%4)*50*(randomchancehard);
+                    hpHero=hpHero-150;
+                    break;
+                }
+            }
+            while ( hpHero > 0 || hpM > 0);
+            if(hpHero>0)
+            {
+                printf("you win the fight !");
+            }
+            else
+            {
+                printf("you lost, try again next time !");
+            }
+
         }
 
-        Direction direction = getKey();
-        Position target = hero;
 
-        switch(direction)
-        {
-            case Up:
-                --target.y;
-                break;
-
-            case Down:
-                ++target.y;
-                break;
-
-            case Right:
-                ++target.x;
-                break;
-
-            case Left:
-                --target.x;
-                break;
-
-            case Mistake:
-                break;
-
-            default:
-                assert(0);
-        }
-
-        slot[maze.matrix[target.y][target.x]](&hero, target, fog);
+        return ;
     }
+
+    Direction direction = getKey();
+    Position target = hero;
+
+    switch(direction)
+    {
+    case Up:
+        --target.y;
+        break;
+
+    case Down:
+        ++target.y;
+        break;
+
+    case Right:
+        ++target.x;
+        break;
+
+    case Left:
+        --target.x;
+        break;
+
+    case Mistake:
+        break;
+
+    default:
+        assert(0);
+    }
+
+    slot[maze.matrix[target.y][target.x]](&hero, target, fog);
 }
+
