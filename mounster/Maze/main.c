@@ -298,7 +298,7 @@ void generateFog(Matrix fog, Position hero,Position m)
     fog.matrix[m.y][m.x]=0;
 }
 
-typedef void (*Slot)(Position *, Position, Matrix);
+typedef void (*Slot)(Position *, Position, Matrix, Position *);
 
 void emptyCell(Position *hero, Position target, Matrix fog,Position *m)
 {
@@ -329,8 +329,8 @@ void runGame(Matrix maze, Matrix fog, Position exit, Position hero,Position m)
         }
         if(m.x==hero.x && m.y==hero.y)
         {
-            double hpHero=1000,hpM=1000,a;
-            int randomchanceeasy,randomchancemid,randomchancehard,fight ;
+            double hpHero=1000,hpM=1000;//,a;
+            int randomchanceeasy,randomchancemid,randomchancehard;//,fight ;
             srand(time(NULL));
             randomchanceeasy=rand()%9;
             if (randomchanceeasy>0)
@@ -359,16 +359,17 @@ void runGame(Matrix maze, Matrix fog, Position exit, Position hero,Position m)
             {
                 randomchancehard=0;
             }
-            printf("(\./)(-_-)(\./) VS (-_-)");
+            printf("(\\./)(-_-)(\\./) VS (-_-)");
             do
             {
                 printf("mounster hp -  %f , your hp - %f\n",hpM,hpHero);
-                printf("(\./)(-_-)(\./) VS (-_-)\n");
+                printf("(\\./)(-_-)(\\./) VS (-_-)\n");
                 printf("viberite tip otaki 1 , 2 ,3\n ");
                 printf("vernaya otaka\n");
                 printf("mb popadu , no urona pobolee budet\n ");
                 printf("krit otaka, trudno popast' \n");
                 int fight;
+                scanf("%d",&fight);
                 switch (fight)
                 {
                 case 1:
@@ -429,6 +430,6 @@ void runGame(Matrix maze, Matrix fog, Position exit, Position hero,Position m)
         assert(0);
     }
 
-    slot[maze.matrix[target.y][target.x]](&hero, target, fog);
+    slot[maze.matrix[target.y][target.x]](&hero, target, fog,&m);
 }
 
