@@ -72,7 +72,7 @@ int main()
         }
     }
     while ( hpHero > 0 && hpM > 0);
-    system("cls");
+    system("clear");
     if(hpHero>0&&hpM<0)
     {
         printf("you win the fight !");
