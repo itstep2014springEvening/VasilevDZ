@@ -1,1 +1,14 @@
 blah blah blah
+clr - common languedge runtime - виртуальная машина, выполняющая код ,но не сразу, а переделывая его в промежуточный код,
+после чего компилируя его;
+cls - common languedge specification - это такая штука,с помощью которой компьютер знает как перевести в промежуточный кож 
+bcl - basic class libary - стандартная  библиотека классов,
+
+long == 8 byte;
+ulong == unsigned 8 byte;
+
+
+
+
+
+
