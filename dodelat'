@@ -78,7 +78,7 @@ namespace Events
     class Bus
     {
         public List<Stop>.Enumerator stopEnumerator;
-        const uint capacity = 1;
+        const uint capacity = 18;
 
         
         // 
@@ -148,6 +148,7 @@ namespace Events
         
         //остановка, где выходит
         readonly public Stop exitStop;
+        readonly public Stop previousExitStop;
 
         public Passanger(List<Stop>.Enumerator stopEnumerator)
         {
@@ -181,19 +182,23 @@ namespace Events
 
             for (; numberOfStops > 0; numberOfStops--)
             {
-                previousExitStop = stopEnumerator.Current;//zavtra
+                previousExitStop = stopEnumerator.Current;//zavtra edet v null
 
                 if (stopEnumerator.MoveNext() == false)
                 {
-                    stopEnumerator.Current;
+               
                  break;
                 }
-                if(stopEnumerator.MoveNext() == null)
+                if(stopEnumerator.Current == null)
+                {
+                    exitStop = previousExitStop;
+                }
+              /*  if(stopEnumerator.MoveNext() == null)
                 {
                     stopEnumerator.MoveNext() = stopEnumerator.Current;
-                }
+                }*/
             }
-            exitStop = stopEnumerator.Current;
+            exitStop =previousExitStop;
             Console.WriteLine(exitStop.name);
 
         }
