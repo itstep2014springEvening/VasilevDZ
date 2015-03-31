@@ -1,0 +1,254 @@
+using System;
+using System.Xml;
+using System.Xml.XPath;
+using System.Collections;
+using System.Collections.Generic;
+
+class MyApp
+{
+    abstract class Participant
+    {
+        protected static Random rand = new Random();
+        abstract public void Act();
+        public readonly string name;
+        protected Participant(string name)
+        {
+            this.name = name;
+        }
+
+
+    }
+
+    delegate Participant makeParticipant(XPathNodeIterator it);
+
+    class Exporter : Participant
+    {
+        private int amount;
+        private int freq;
+        public Exporter(string name, int amount, int freq) :
+            base(name)
+        {
+
+
+
+            this.amount = amount;
+            this.freq = freq;
+            Console.WriteLine("New exporter \"{0}\" a={1}, f={2}", name, amount, freq);
+
+        }
+        public override void Act()
+        {
+            if (Participant.rand.Next(0, 1) == 0)
+            {
+            //    Stock.Sell(amount);
+            }
+            else
+            {
+                Stock.sell.Add(new Bid { type = Bidtype.Sell, amount = this.amount, price = Stock.Rate });
+            }
+        }
+
+    }
+
+    class Importer : Participant
+    {
+        private int amount;
+        private int freq;
+        public Importer(string name, int amount, int freq) :
+            base(name)
+        {
+            this.amount = amount;
+            this.freq = freq;
+        }
+        public override void Act()
+        {
+            if (Participant.rand.Next(0, 1) == 0)
+            {
+        //        Stock.Buy(amount);
+            }
+            else
+            {
+                Stock.buy.Add(new Bid { type = Bidtype.Buy, amount = this.amount, price = Stock.Rate });
+            }
+        }
+    }
+
+    class NationalBank : Participant
+    {
+        private int threshold;
+        private int period;
+        public NationalBank(int threshold, int period) :
+            base("Нацбанк")
+        {
+            this.period = period;
+            this.threshold = threshold;
+        }
+        public override void Act()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class ParticipantFactory
+    {
+        static Dictionary<string, makeParticipant> d;
+
+        static ParticipantFactory()
+        {
+            d = new Dictionary<string, makeParticipant>();
+            d["exporter"] = delegate(XPathNodeIterator iterator)
+            {
+                XPathNodeIterator it = iterator.Current.Select("@name");
+                it.MoveNext();
+                string name = it.Current.Value;
+
+                it = iterator.Current.Select("@amount");
+                it.MoveNext();
+                int amount = Int32.Parse(it.Current.Value);
+
+                it = iterator.Current.Select("@freq");
+                it.MoveNext();
+                int freq = Int32.Parse(it.Current.Value);
+
+
+                Exporter e = new Exporter(name, amount, freq);
+                return e;
+            };
+            d["importer"] = delegate(XPathNodeIterator iterator)
+            {
+                XPathNodeIterator it = iterator.Current.Select("@name");
+                it.MoveNext();
+                string name = it.Current.Value;
+
+                it = iterator.Current.Select("@amount");
+                it.MoveNext();
+                int amount = Int32.Parse(it.Current.Value);
+
+                it = iterator.Current.Select("@freq");
+                it.MoveNext();
+                int freq = Int32.Parse(it.Current.Value);
+
+
+                Importer e = new Importer(name, amount, freq);
+                return e;
+            };
+        }
+
+        static public Participant Create(XPathNodeIterator it)
+        {
+            if (d.ContainsKey(it.Current.Name))
+            {
+                return d[it.Current.Name](it);
+            }
+            throw new Exception(String.Format("Participant type {0} not supported", it.Current.Name));
+        }
+
+    }
+
+    enum Bidtype { Sell, Buy };
+
+    struct Bid
+    {
+        public void Decrement(int amount)
+        {
+            this.amount -= amount;
+        }
+        public Bidtype type;
+        public int amount;
+        public int price;
+    }
+
+    class Stock
+    {
+        static public int day = 0;
+        static public List<Participant> participants;
+        static public List<Bid> sell, buy;
+        static Stock()
+        {
+            participants = new List<Participant>();
+            sell = new List<Bid>();
+            buy = new List<Bid>();
+        }
+
+        public static int Rate
+        {
+            get
+            {
+                sell.Sort();
+                buy.Sort();
+                int s = sell[0].price;
+                int b = buy[buy.Count - 1].price;
+                return (s + b) / 2;
+            }
+        }
+        public static void Buy(int amount)
+        {
+            sell.Sort();
+            while (amount > 0)
+            {
+                if (sell[0].amount > amount)
+                {
+                    Console.WriteLine("Bought {0}$ for {1}", amount, sell[0].price);
+                    sell[0].Decrement(amount);
+                    return;
+                }
+                Console.WriteLine("Bought {0}$ for {1}", sell[0].amount, sell[0].price);
+                amount -= sell[0].amount;
+                sell.Remove(sell[0]);
+            }
+
+        }
+
+        public static void Sell(int amount)
+        {
+            buy.Sort();
+            while (amount > 0)
+            {
+                if (buy[buy.Count - 1].amount > amount)
+                {
+                    Console.WriteLine("Sold {0}$ for {1}", amount, buy[buy.Count - 1].price);
+                    buy[buy.Count - 1].Decrement(amount);
+                    return;
+                }
+                Console.WriteLine("Sold {0}$ for {1}", buy[buy.Count - 1].amount, buy[buy.Count - 1].price);
+                amount -= buy[buy.Count - 1].amount;
+                buy.Remove(buy[buy.Count - 1]);
+            }
+
+        }
+
+
+
+
+        static void Main()
+        {
+
+            XPathDocument doc = new XPathDocument(@"D:\maixi\stock\players.xml");
+            XPathNavigator nav = doc.CreateNavigator();
+            XPathNodeIterator iterator = nav.Select("/players/exporter|/players/importer");
+
+            while (iterator.MoveNext())
+            {
+                Stock.participants.Add(ParticipantFactory.Create(iterator));
+            }
+            Stock.buy.Add(new Bid { type = Bidtype.Buy, amount = 1000000000, price = 12000 });
+            Stock.sell.Add(new Bid { type = Bidtype.Sell, amount = 1000000000, price = 20000 });
+
+            Stock.Buy(100);
+
+            while (Stock.day < 100)
+            {
+                Stock.day++;
+                foreach (Participant p in Stock.participants)
+                {
+                    p.Act();
+                }
+                Console.WriteLine("курс {0} на  {1} день", Stock.Rate, Stock.day);
+            }
+            Stock.Sell(200);
+
+        }
+
+
+    }
+}
