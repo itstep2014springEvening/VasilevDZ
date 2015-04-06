@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace day1prg
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if(DialogResult.OK== MessageBox.Show("Загадайте число от 1 до 2000 ", "Magic Programm", MessageBoxButtons.OK, MessageBoxIcon.Hand))
+            {   
+                int number=1000;
+                int constant = 0;
+                constant = number;
+                string ourString;
+                string finalString;
+                finalString = String.Format("Ваше число = {0}",number);
+                ourString = String.Format("Ваше больше {0}?Eсли это оно нажмите cancel",number);
+                DialogResult result = MessageBox.Show(ourString, "вопрос?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Hand);
+                while(constant!=1)
+               {
+                   finalString = String.Format("Ваше число = {0}", number);
+                  ourString = String.Format("Ваше больше {0}?Eсли это оно нажмите cancel", number);
+                   result = MessageBox.Show(ourString, "вопрос?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Hand);
+                   if (DialogResult.Yes == result)
+                   {
+                       constant = constant/2;
+                       if(constant/2==1)
+                       {
+                           constant += 1;
+                       }
+                       if (constant == 3)
+                           constant = 1;
+                       else { }
+                       number += constant;            
+                   }
+                   if(DialogResult.No == result)
+                   {
+                       if (constant / 2 == 1)
+                       {
+                           constant -= 1;
+                       }
+                       if (constant == 3)
+                           constant = 1;
+                       else { }
+                       constant = constant / 2;  
+                       number -= constant;                      
+                   }
+                }
+              MessageBox.Show(finalString);
+
+            }
+        }
+    }
+}
